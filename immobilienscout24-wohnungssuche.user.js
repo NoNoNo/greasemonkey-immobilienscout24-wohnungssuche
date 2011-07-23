@@ -33,6 +33,10 @@
       $KM = $$.find('DT:contains("Kaltmiete")').next(),
       $WF = $$.find('DT:contains("Wohnfläche")').next();
   
+    if (/(ohne|keine)\s+Provision|Provisionsfrei/i.test($$.text())) {
+      $$.css({ outline: 'medium solid green' });
+    }
+
     if ($KM.length && $WF.length) {
         
       var 
@@ -45,10 +49,6 @@
       if (qm_preis < FRAUD_LIMIT) {
         $$.css({ outline: 'medium solid red' });
       }
-    }
-
-    if (/(ohne|keine)\s+Provision|Provisionsfrei/i.test($$.text())) {
-      $$.css({ outline: 'medium solid green' });
     }
   }
   
