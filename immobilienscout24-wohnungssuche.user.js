@@ -5,7 +5,7 @@
 // @include        http://www.immobilienscout24.tld/*
 // @require        http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js
 // @copyright      Oliver Prygotzki <http://oliver.prygotzki.de/>
-// @version        1.0
+// @version        1.1 by msoul
 // @license        Creative Commons Attribution-Noncommercial 3.0 Germany License
 // @description    Anzeige des €/m²-Preises, Hervorhebung provisionfreier Wohnungen (= grüner Rahmen) sowie verdächtig günstiger Angebot (= roter Rahmen)
 // ==/UserScript==
@@ -32,28 +32,29 @@
       $$ = $(this),
       $KM = $$.find('DT:contains("Kaltmiete")').next(),
       $WF = $$.find('DT:contains("Wohnfläche")').next();
+      
   
     if (/(ohne|keine)\s+Provision|Provisionsfrei/i.test($$.text())) {
-      $$.css({ outline: 'medium solid green' });
+      $$.css({ background: '#EBFFEB' });
     }
 
     if ($KM.length && $WF.length) {
         
       var 
-        km = parseFloat($KM.text(), 10),
+        km = parseFloat($KM.text().replace('.',''), 10),
         qm = parseFloat($WF.text(), 10),
         qm_preis = Math.round( (km/qm) * 10 ) / 10;
           
       $WF.html($WF.html() + ' (' + formatCurrency(qm_preis) + ' €/m²)');
       
       if (qm_preis < FRAUD_LIMIT) {
-        $$.css({ outline: 'medium solid red' });
+        $$.css({ background: 'FFDADA' });
       }
     }
   }
   
   $(function() {
-    $('.is24-res-entry').each(entry);
+    $('.medialist').each(entry);
   });
 
 })(jQuery.noConflict());
